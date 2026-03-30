@@ -1,13 +1,18 @@
-import React from 'react'
-import { ArrowRight, Dot, IdCard, Lock } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowRight, Dot, IdCard, Lock, Eye, EyeOff } from 'lucide-react'
 
 function Login() {
+    const [isVisible, setIsVisible] = useState(false)
+
+    const handlerPassword = () => {
+        setIsVisible(!isVisible)
+    }
   return (
     <main className='w-screen h-screen grid grid-cols-1 
                     md:grid-cols-[2fr_1fr] 
                     bg-[#1f1714]'>
 
-        {/* ---- Contenedor derecho ----- */}
+        {/* ---- Contenedor IZQUIERDO ----- */}
         <div className='relative h-screen'>
             {/* --- div IMAGEN de fondo --- */}
             <div className='absolute inset-0 bg-[url(./assets/login/fondo.png)] bg-contain grayscale bg-no-repeat bg-center '></div>
@@ -16,7 +21,7 @@ function Login() {
             <div className='absolute inset-0 bg-black/50 '></div>
             
             {/* --- div de CONTENIDO */}
-            <section className='absolute flex flex-col gap-4 bottom-10 left-10 lg:bottom-20 lg:left-25'>
+            <section className='absolute flex flex-col gap-4 bottom-10 left-10 lg:bottom-20 lg:left-25 max-w-2xl'>
                 <span className='text-[#bd734c] text-sm'>────── HIGH VELOCITY STATIONS</span>
 
                 <div className='text-6xl font-bold sm:text-6xl lg:8xl'>
@@ -29,7 +34,7 @@ function Login() {
             
         </div>
         
-        {/* ---- Contenedor derecho ---- */}
+        {/* ---- Contenedor DERECHO ---- */}
         <aside className='bg-[#0e0e0e] font text-[#a8aaaa] flex flex-col gap-8 p-16' >
             {/* -- Titulo -- */}
             <div>
@@ -38,7 +43,6 @@ function Login() {
                 <span className='text-lg'>Service Management Interface</span>
             </div>
 
-            {/* ---- Contenedor derecho ---- */}
             <div className='flex flex-col gap-6'>
                 
                 {/* --- Formulario --- */}
@@ -50,6 +54,7 @@ function Login() {
                         <div className='relative flex flex-col gap-2'>
                             <IdCard  size={30} 
                             className='absolute left-3 top-3'/>
+
                             <input type="email" id="email" placeholder='name@gmail.com' required 
                             className='bg-black ring-1 focus:ring-2 focus:ring-[#ff8c4e]/40 rounded-xl py-4 pl-14 pr-4 transition-all outline-none '/> 
                         </div>
@@ -59,7 +64,7 @@ function Login() {
                     {/* -- Input contraseña -- */}
                    <div className='group'>
                         <div className='flex justify-between'>
-                            <label htmlFor="password" className='group-focus-within:text-[#ff8c4e]'>PERSONNAL EMAIL</label>
+                            <label htmlFor="password" className='group-focus-within:text-[#ff8c4e]'>ACCESS PIN </label>
                             <label htmlFor="password" className=''>FORGOT PASSWORD?</label>
                         </div>
                         
@@ -67,8 +72,16 @@ function Login() {
                         <div className='relative flex flex-col gap-2'>
                             <Lock  size={30} 
                             className='absolute left-3 top-3'/>
-                            <input type="password" id="password" placeholder='******' required 
-                            className='bg-black ring-1 focus:ring-2 focus:ring-[#ff8c4e]/40 rounded-xl py-4 pl-14 pr-4 transition-all outline-none '/> 
+                            <input type={ isVisible ? 'text': 'password' } id="password" placeholder='******' required 
+                            className='bg-black ring-1 focus:ring-2 focus:ring-[#ff8c4e]/40 rounded-xl py-4 pl-14 pr-14 transition-all outline-none '/> 
+                            { isVisible ?  <EyeOff size={30} 
+                            className='absolute right-3 top-3 cursor-pointer'
+                            onClick={ handlerPassword }/> 
+                            : 
+                            <Eye size={30} 
+                            className='absolute right-3 top-3 cursor-pointer'
+                            onClick={ handlerPassword }/>}
+                            
                         </div>
 
                     </div>

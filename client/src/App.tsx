@@ -10,6 +10,7 @@ function App() {
       <Routes>
 
         <Route path='/login' element={ <Login/> }/>
+        <Route path='/' element={ <Login/> }/>
 
         {/* -- Ruta por defecto ---*/}
         <Route path='*' element={ <NotFound/> } />
