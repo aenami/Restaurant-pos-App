@@ -6,7 +6,7 @@ dotenv.config();
 const app = express()
 
 // -------Importando rutas
-
+import AuthenticationRouter from './routes/auth.routes'
 
 
 
@@ -26,7 +26,7 @@ app.use(express.urlencoded( {extended: false} ))
 
 
 // ------- RUTAS CREADAS -----
-
+app.use('/auth', AuthenticationRouter)
 
 
 // ------ RUTA POR DEFAULT

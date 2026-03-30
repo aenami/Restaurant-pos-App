@@ -11,6 +11,7 @@ function App() {
 
         <Route path='/login' element={ <Login/> }/>
         <Route path='/' element={ <Login/> }/>
+        <Route path='/homePage' element={ <h1>  HOME PAGE DEL SISTEMA </h1> }/>
 
         {/* -- Ruta por defecto ---*/}
         <Route path='*' element={ <NotFound/> } />

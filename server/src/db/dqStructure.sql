@@ -18,7 +18,7 @@ CREATE TABLE usuario (
     apellido_usuario VARCHAR(60) NOT NULL,
     email_usuario VARCHAR(120) NOT NUll,
     fecha_creacion_usuario DATE DEFAULT NOW(),
-    contraseña_usuario VARCHAR(200) NOT NULL,
+    password_usuario VARCHAR(200) NOT NULL,
     rol_usuario rol_enum NOT NULL,
 
     -- LOGIC CONSTRAINTS

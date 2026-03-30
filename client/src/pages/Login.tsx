@@ -1,12 +1,59 @@
-import { useState } from 'react'
+import { useState, type SubmitEventHandler } from 'react'
 import { ArrowRight, Dot, IdCard, Lock, Eye, EyeOff } from 'lucide-react'
+import { useNavigate } from 'react-router'
+import BackendRes from '../components/backendRes';
+import { tokenManager } from '../utils/tokenManager';
 
 function Login() {
+    const navigate = useNavigate();
+
     const [isVisible, setIsVisible] = useState(false)
+    const [response, setResponse] = useState('')
 
     const handlerPassword = () => {
         setIsVisible(!isVisible)
     }
+
+    const handlerForm:SubmitEventHandler = async (e) => {
+        // Evitamos que la informacion se envie tal cual
+        e.preventDefault()
+        const email = e.target.email.value
+        const password = e.target.password.value
+
+        try {
+            const response = await fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify( { email, password } )
+            })
+
+            const data = await response.json()
+
+            //3. Verificamos si la respuesta de backend fue negativa
+            if(!response.ok){
+                console.log('Respuesta negativa del backend')
+                throw new Error(data.message || 'Errror al iniciar sesion')
+            }
+
+            //4. Guardamos la sesion en el navegador
+            tokenManager.saveSession(data.token, data.user)
+
+            //5. Redirigimos al usuario a la home page del sistema
+            navigate('/homePage')
+
+        } catch (error) {
+            if(error instanceof Error){
+                console.log(error)
+                console.log(error.message)
+                setResponse(error.message)
+            }
+            
+        }
+
+    }
+
   return (
     <main className='w-screen h-screen grid grid-cols-1 
                     md:grid-cols-[2fr_1fr] 
@@ -24,7 +71,7 @@ function Login() {
             <section className='absolute flex flex-col gap-4 bottom-10 left-10 lg:bottom-20 lg:left-25 max-w-2xl'>
                 <span className='text-[#bd734c] text-sm'>────── HIGH VELOCITY STATIONS</span>
 
-                <div className='text-6xl font-bold sm:text-6xl lg:8xl'>
+                <div className='text-6xl font-bold lg:8xl'>
                     <h1 className='text-white'>PRECICION</h1>
                     <h1 className='text-[#ff9157] italic'>IN MOTION.</h1>
                 </div>
@@ -46,7 +93,7 @@ function Login() {
             <div className='flex flex-col gap-6'>
                 
                 {/* --- Formulario --- */}
-                <form action="" className='flex flex-col gap-6'>
+                <form onSubmit={handlerForm} className='flex flex-col gap-6'>
                     {/* -- Input Email -- */}
                     <div className='group'>
                         <label htmlFor="email" className='group-focus-within:text-[#ff8c4e]'>PERSONNAL EMAIL</label>
@@ -86,11 +133,14 @@ function Login() {
 
                     </div>
 
-                    <button className='bg-[#ff8c4e] text-black flex justify-center align-middle gap-4 border-none rounded-md p-5 font-bold text-lg cursor-pointer hover:bg-[#f86b20]' >
+                    <button type='submit' className='bg-[#ff8c4e] text-black flex justify-center align-middle gap-4 border-none rounded-md p-5 font-bold text-lg cursor-pointer hover:bg-[#f86b20]'>
                         Initialize Session <ArrowRight/>
                     </button>
 
                 </form>
+                
+                {/* --- Componente que mostrara la respuesta del backend --- */}
+                { response ? <BackendRes message={response}/> : null}
                 
                 {/* --- Informacion inferior --- */}
                 <div className='flex gap-8'>
