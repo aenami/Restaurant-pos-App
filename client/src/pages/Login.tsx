@@ -1,7 +1,7 @@
 import { useState, type SubmitEventHandler } from 'react'
 import { ArrowRight, Dot, IdCard, Lock, Eye, EyeOff } from 'lucide-react'
 import { useNavigate } from 'react-router'
-import BackendRes from '../components/backendRes';
+import BackendRes from '../components/BackendRes';
 import { tokenManager } from '../utils/tokenManager';
 
 function Login() {
@@ -45,8 +45,6 @@ function Login() {
 
         } catch (error) {
             if(error instanceof Error){
-                console.log(error)
-                console.log(error.message)
                 setResponse(error.message)
             }
             
